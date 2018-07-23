@@ -12,15 +12,14 @@ class Mysql < Formula
 
   depends_on "cmake" => :build
 
-  # GCC is not supported either, so exclude for El Capitan.
-  depends_on :macos => :sierra if DevelopmentTools.clang_build_version == 800
-
   # https://github.com/Homebrew/homebrew-core/issues/1475
   # Needs at least Clang 3.6, which shipped alongside Yosemite.
   # Note: MySQL themselves don't support anything below Sierra.
   depends_on :macos => :yosemite
 
-  depends_on "openssl"
+  # According to https://dev.mysql.com/doc/refman/8.0/en/source-installation.html's section on
+  # 'Source Installation System Requirements,' MySQL:
+  needs :cxx11
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -31,10 +30,26 @@ class Mysql < Formula
 
   # https://bugs.mysql.com/bug.php?id=86711
   # https://github.com/Homebrew/homebrew-core/pull/20538
+  # https://github.com/Homebrew/homebrew-core/pull/… # Finish adding when I get a PR number
+                                                     # assigned.
   fails_with :clang do
     build 800
     cause "Wrong inlining with Clang 8.0, see MySQL Bug #86711"
   end
+  if DevelopmentTools.clang_build_version == 800
+    depends_on "gcc" => :build
+    ENV["HOMEBREW_CC"] = "gcc-8"
+  end
+  # Apple's GCC shim (which redirects to AppleClang) is thus not supported either.
+  fails_with :gcc_4_2
+
+  # According to https://dev.mysql.com/doc/refman/8.0/en/source-installation.html's section on
+  # 'Source Installation System Requirements,' MySQL also:
+  ("4.3".."4.7").each do |v|
+    fails_with :gcc => v
+  end
+
+  depends_on "openssl"
 
   def datadir
     var/"mysql"
