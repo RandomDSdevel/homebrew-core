@@ -21,6 +21,11 @@ class Qt < Formula
 
   depends_on "pkg-config" => :build
   depends_on :xcode => :build
+  depends_on "llvm" if build.with? "llvm"
+
+  option "with-llvm", "Build with LLVM support (required to build `qdoc` and Qt documentation.)"
+
+  deprecated_option "with-docs" => "with-llvm"
 
   def install
     args = %W[
@@ -41,10 +46,19 @@ class Qt < Formula
       -proprietary-codecs
     ]
 
+    if build.with? "llvm"
+      ENV.prepend_path "PATH", Formula["llvm"].bin
+    end
+
     system "./configure", *args
     system "make"
     ENV.deparallelize
     system "make", "install"
+
+    if build.with? "llvm"
+      system "make", "docs"
+      system "make", "install_docs"
+    end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
