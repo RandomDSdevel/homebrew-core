@@ -1,9 +1,8 @@
 class Suricata < Formula
   desc "Network IDS, IPS, and security monitoring engine"
   homepage "https://suricata-ids.org/"
-  url "https://www.openinfosecfoundation.org/download/suricata-4.0.5.tar.gz"
-  sha256 "74dacb4359d57fbd3452e384eeeb1dd77b6ae00f02e9994ad5a7b461d5f4c6c2"
-  revision 2
+  url "https://www.openinfosecfoundation.org/download/suricata-4.1.0.tar.gz"
+  sha256 "bd9b00fb4fc255566d4d8a8b52eb4977b4e8b49b37710d166cba75e6a93a504a"
 
   bottle do
     sha256 "1d351c09ec06f585958ddd226260888ad8c8cdc30f64f1205c0df0fbfac57668" => :mojave
@@ -12,6 +11,7 @@ class Suricata < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "rust" => :build
   depends_on "jansson"
   depends_on "libmagic"
   depends_on "libnet"
@@ -55,7 +55,8 @@ class Suricata < Formula
       --with-libmagic-includes=#{libmagic.opt_include}
       --with-libmagic-libraries=#{libmagic.opt_lib}
       --with-libnet-includes=#{libnet.opt_include}
-      --with-libnet-libs=#{libnet.opt_lib}
+      --with-libnet-libraries=#{libnet.opt_lib}
+      --enable-ipfw
     ]
 
     system "./configure", *args
