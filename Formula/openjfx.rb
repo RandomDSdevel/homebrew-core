@@ -30,7 +30,7 @@ class Openjfx < Formula
   depends_on XcodeCLTRequirement => :build
 
   def install
-    system "gradle", "-PCOMPILE_MEDIA=true", "-PCOMPILE_WEBKIT=true"
+    system "gradle", "-PCONF=Release", "-PCOMPILE_MEDIA=true", "-PCOMPILE_WEBKIT=true"
     prefix.install Dir["#{buildpath}/build/artifacts/javafx-sdk-#{version}/*"]
   end
 
