@@ -1,4 +1,4 @@
-# For `pour_bottle? do` block in main formula body below:
+# Used in a `depends_on` statement below:
 class XcodeCLTRequirement < Requirement
   fatal true
 
