@@ -23,7 +23,7 @@ class Openjfx < Formula
   depends_on "ant"
   depends_on "cmake" # For `javafx.web`.
   depends_on "gperf" # Also for `javafx.web`.
-  depends_on "gradle"
+  depends_on "gradle@4"
 
   depends_on :java => "11"
   depends_on :xcode => :build
