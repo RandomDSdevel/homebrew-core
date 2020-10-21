@@ -17,15 +17,17 @@ class Openjfx < Formula
   desc "Open-source, next-generation Java client application platform"
   homepage "https://openjfx.io/"
   url "https://github.com/javafxports/openjdk-jfx/archive/11.0.1+1.tar.gz"
-  version "11.0.1"
+  version "11.0.1" # **TO-DO:**  Use a newer version!  
   sha256 "423c31aa5c25496748198937923c9651f98d1e9b87c2cb4fc643363b31c7a3c9"
 
   depends_on "ant"
   depends_on "cmake" # For `javafx.web`.
   depends_on "gperf" # Also for `javafx.web`.
-  depends_on "gradle@4"
+  depends_on "gradle@4" # **TO-DO:**  After updating this formula to describe a more recent version 
+                        #             of the OpenJFX package, use the newer version of Gradle it re-
+                        #             quires!!  
 
-  depends_on :java => "11"
+  depends_on :java => "11" # **TO-DO:**  Use a newer version of Java!!  
   depends_on :xcode => :build
   depends_on XcodeCLTRequirement => :build
 
